@@ -34,8 +34,11 @@ blockquote {
 }
 
 .btn-lg {
-    border-radius: 2px;
-    background-color: #00A1E1;
+    border-radius: 4px;
+    font-family: "Source Sans Light";
+    background-color: #009CDF;
+    font-size: 20px;
+    /*font-weight: 300;*/
 }
 
 .jumbotron {
