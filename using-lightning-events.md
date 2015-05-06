@@ -99,6 +99,6 @@ In this module, you create a Lightning event used by AccountList to notify Accou
 <div class="row" style="margin-top:40px;">
 <div class="col-sm-12">
 <a href="create-accountmap-component.html" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> Previous</a>
-<a href="using-lightning-events2.html class="btn btn-default pull-right">Next <i class="glyphicon glyphicon-chevron-right"></i></a>
+<a href="using-lightning-events2.html" class="btn btn-default pull-right">Next <i class="glyphicon glyphicon-chevron-right"></i></a>
 </div>
 </div>
