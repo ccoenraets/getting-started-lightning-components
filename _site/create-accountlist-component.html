@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Getting Started with Lightning Components</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/syntax.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-721308-2', 'ccoenraets.github.io');
+      ga('send', 'pageview');
+    </script>
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Getting Started with Lightning Components</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a
+                        href="https://github.com/ccoenraets/salesforce-developer-workshop"><img
+                        src="images/icon-github.png" style="border: none;margin: -4px 0;height: 28px;width: 28px;"/>
+                    GitHub
+                    Project</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+
+
+<div class="container">
+
+<div class="row">
+
+    <div class="col-xs-12 col-sm-8">
+        <h1>Part 5&#58; Creating the AccountList Component</h1>
+        <!--<hr/>-->
+        <p>In this module, you create the AccountList component responsible for displaying the list of accounts. You also create the AccountListItem component that you nest inside AccountList to render individual accounts in the list.</p>
+
+<h2>What you will learn</h2>
+
+<ul>
+<li>Nest Lightning Components</li>
+<li>Use component attributes</li>
+<li>Use the Lightning iterator</li>
+</ul>
+
+<h2>Step 1: Create the AccountListItem Component</h2>
+
+<ol>
+<li><p>In the Developer Console, click <strong>File</strong> &gt; <strong>New</strong> &gt; <strong>Lightning Component</strong>. Specify <strong>AccountListItem</strong> as the bundle name and click <strong>Submit</strong>.</p></li>
+<li><p>Implement the component as follows:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;aura:component&gt;
+
+    &lt;aura:attribute name=&quot;account&quot; type=&quot;Account&quot;/&gt;
+
+    &lt;li&gt;&lt;a&gt;{!v.account.Name}&lt;/a&gt;&lt;/li&gt;
+
+&lt;/aura:component&gt;
+</code></pre></div>
+<h3>Code Highlights:</h3>
+
+<ul>
+<li>The <code>account</code> attribute is defined to hold the account the list item is responsible for displaying. The value of the account attribute will be provided by the AccountList component you create in step 2.</li>
+<li>The component UI consists of a simple HTML <code>&lt;li&gt;</code> element.</li>
+<li><code>{!v.account.Name}</code> is the Lightning data binding notation to render the account name inside the <code>&lt;li&gt;</code> tag.</li>
+<li>The <code>&lt;a&gt;</code> tag that wraps the account name makes the account selectable. You&#39;ll hook that up in part 8.</li>
+</ul></li>
+<li><p>Click <strong>File</strong> &gt; <strong>Save</strong> to save the component.</p></li>
+<li><p>Click <strong>STYLE</strong> (upper right corner) and implement the component styles as follows:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">.THIS {
+    border-bottom: solid 1px #DDDDDD;
+}
+
+.THIS a {
+    display: block;
+    padding: 20px;
+    color: inherit;
+}
+
+.THIS a:active {
+    background-color: #E8F4FB;
+}
+</code></pre></div>
+<h3>Code Highlights:</h3>
+
+<ul>
+<li><code>.THIS</code> refers to the root level <code>&lt;li&gt;</code> tag.</li>
+<li><code>.THIS a</code> refers to the anchor tags within the component.</li>
+<li>The <code>:active</code> CSS pseudo-class sets a different background when the list item is selected in order to highlight the selection.</li>
+</ul></li>
+<li><p>Click <strong>File</strong> &gt; <strong>Save</strong> to save the styles.</p></li>
+</ol>
+
+<h2>Step 2: Create the AccountList Component</h2>
+
+<ol>
+<li><p>In the Developer Console, click <strong>File</strong> &gt; <strong>New</strong> &gt; <strong>Lightning Component</strong>. Specify <strong>AccountList</strong> as the bundle name and click <strong>Submit</strong>.</p></li>
+<li><p>Implement the component as follows:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;aura:component controller=&quot;AccountController&quot;&gt;
+
+    &lt;aura:attribute name=&quot;accounts&quot; type=&quot;Account[]&quot;/&gt;
+    &lt;aura:handler name=&quot;init&quot; value=&quot;{!this}&quot; action=&quot;{!c.doInit}&quot; /&gt;
+
+    &lt;ul&gt;
+        &lt;aura:iteration items=&quot;{!v.accounts}&quot; var=&quot;account&quot;&gt;
+            &lt;c:AccountListItem account=&quot;{!account}&quot;/&gt;
+        &lt;/aura:iteration&gt;
+    &lt;/ul&gt;
+
+&lt;/aura:component&gt;
+</code></pre></div>
+<h3>Code Highlights:</h3>
+
+<ul>
+<li>The controller assigned to the component (first line of code) refers to the <strong>server-side controller</strong> (AccountController) you created in part 3.</li>
+<li>The <code>accounts</code> attribute is defined to hold the list of Account objects returned by the server.</li>
+<li>The <code>init</code> handler is defined to execute some code when the component is initialized. <code>doInit</code> is defined in the component&#39;s <strong>client-side controller</strong> (you&#39;ll implement the controller in the following steps).</li>
+<li><code>&lt;aura:iteration&gt;</code> is used to iterate through the list of accounts and create an instance of  <code>AccountListItem</code> for each account.</li>
+</ul></li>
+<li><p>Click <strong>File</strong> &gt; <strong>Save</strong> to save the component.</p></li>
+<li><p>Click <strong>CONTROLLER</strong>, and implement the Controller as follows:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">({
+    doInit : function(component, event) {
+        var action = component.get(&quot;c.findAll&quot;);
+        action.setCallback(this, function(a) {
+            component.set(&quot;v.accounts&quot;, a.getReturnValue());
+        });
+        $A.enqueueAction(action);
+    }
+})
+</code></pre></div>
+<h3>Code Highlights:</h3>
+
+<ul>
+<li>The controller has a single function called <code>doInit()</code>. This is the function the component calls when it is initialized.</li>
+<li>You first get a reference to the <code>findAll()</code> method in the component&#39;s server-side controller (AccountController), and store it in the <code>action</code> variable.</li>
+<li>Since the call to the server&#39;s findAll() method is asynchronous, you then register a callback function that is executed when the call returns. In the callback function, you simply assign the list of accounts to the component&#39;s <code>accounts</code> attribute.</li>
+<li><code>$A.enqueueAction(action)</code> sends the request the server. More precisely, it adds the call to the queue of asynchronous server calls. That queue is an optimization feature of Lightning.</li>
+</ul></li>
+<li><p>Click <strong>File</strong> &gt; <strong>Save</strong> to save the controller.</p></li>
+<li><p>Click <strong>STYLE</strong> (upper right corner) and implement the component styles as follows:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">.THIS {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    background: #FFFFFF;
+    height: 100%;
+}
+</code></pre></div>
+<h3>Code Highlights:</h3>
+
+<ul>
+<li><code>.THIS</code> refers to the root level <code>&lt;ul&gt;</code> tag.</li>
+<li><code>list-style-type: none</code> is used to remove the standard item bullets.</li>
+</ul></li>
+<li><p>Click <strong>File</strong> &gt; <strong>Save</strong> to save the styles.</p></li>
+</ol>
+
+<h2>Step 3: Add AccountList to the AccountLocator Component</h2>
+
+<ol>
+<li><p>In the developer console, go back to the <strong>AccountLocator</strong> component.</p>
+
+<p>If you don&#39;t see the tab in the developer console, click <strong>File</strong> &gt; <strong>Open Lightning Resources</strong> in the Developer Console menu, select <strong>AccountLocator</strong> &gt; <strong>COMPONENT</strong> in the dialog, and click the <strong>Open Selected</strong> button.</p></li>
+<li><p>Replace the AccountList placeholder with the actual component:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;aura:component implements=&quot;force:appHostable&quot;&gt;
+
+    &lt;div&gt;
+        &lt;div&gt;
+            AccountMap goes here
+        &lt;/div&gt;
+        &lt;div&gt;
+            &lt;c:AccountList /&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+&lt;/aura:component&gt;
+</code></pre></div></li>
+<li><p>Click <strong>File</strong> &gt; <strong>Save</strong> to save the component.</p></li>
+<li><p>Go back to the Salesforce1 app and reload <strong>Account Locator</strong> from the menu to see the changes:</p>
+
+<p><img src="images/version3.jpg" alt=""></p></li>
+</ol>
+
+<div class="row" style="margin-top:40px;">
+<div class="col-sm-12">
+<a href="create-accountlocator-component.html" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> Previous</a>
+<a href="create-accountmap-component.html" class="btn btn-default pull-right">Next <i class="glyphicon glyphicon-chevron-right"></i></a>
+</div>
+
+<p></div></p>
+
+
+
+        <div class="row" style="margin-top: 30px;">
+            <div class="col-xs-12">
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                    var disqus_shortname = 'salesforcelightningtutorial'; // required: replace example with your forum shortname
+
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-xs-12 col-sm-4 right-nav">
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading" style="font-variant:small-caps;font-size: 18px;">index</div>
+            <ol class="list-group">
+                <li><a href="setup-environment.html">Setting Up Your Developer Environment</a></li>
+                <li><a href="enable-geolocation.html">Enabling Geolocation on the Account Object</a></li>
+                <li><a href="create-apex-controller.html">Creating the AccountController Class</a></li>
+                <li><a href="create-accountlocator-component.html">Creating the AccountLocator Component</a></li>
+                <li><a href="create-accountlist-component.html">Creating the AccountList Component</a></li>
+                <li><a href="create-accountmap-component.html">Creating the AccountMap Component</a></li>
+                <li><a href="using-lightning-events.html">Using Events to Add Markers to the Map</a></li>
+                <li><a href="using-lightning-events2.html">Using Events to Center the Map</a></li>
+                <li><a href="using-salesforce1-events.html">Interacting with the Salesforce1 Application</a></li>
+            </ol>
+            <hr/>
+            <div style="margin: -8px 0 12px 14px">
+                <a href="next.html">Next Steps</a>
+            </div>
+        </div>
+<a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-url="http://developerforce.io/lightning-components-tutorial" data-text="Salesforce Lightning Components Tutorial">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    </div>
+
+</div>
+
+</div>
+
+<div class="container">
+    <div id="footer">
+        <p class="text-muted">Salesforce Developer Workshop, 2014.</p>
+    </div>    <!-- Site footer -->
+</div>
+
+
+<script src="lib/jquery.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
